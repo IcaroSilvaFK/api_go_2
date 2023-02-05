@@ -2,6 +2,7 @@ package entities
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -9,18 +10,17 @@ import (
 type Tweet struct {
 	ID          string `json:"id"`
 	Description string `json:"description"`
+	CreatedAt time.Time `json:"created"`
 }
 
-func TweetEntity () *Tweet{
-	return &Tweet{}
-}
+func NewTweet(description string) (*Tweet, error) {
 
-func (tweet *Tweet) NewTweet(description string) (*Tweet, error) {
-
-	newTweet := &Tweet{
+	tweet := &Tweet{
 		ID: uuid.NewString(),
 		Description:description,
+		CreatedAt: time.Now(),
 	}
+
 
 	err := tweet.IsValid()
 
@@ -28,20 +28,25 @@ func (tweet *Tweet) NewTweet(description string) (*Tweet, error) {
 		return nil,err
 	}	
 
-	return newTweet,nil
+	return tweet,nil
 
 }	
 
 
-func (tweet *Tweet) FindAll() map[*Tweet]Tweet{
+func (tweet *Tweet) FindAll() []Tweet{
 
-	tweets := map[*Tweet]Tweet{}
+	tweets := []Tweet{}
 
 	return tweets
 }
 
 
 func (tweet *Tweet) IsValid() error {
+
+
+
+	fmt.Println(tweet.Description)
+
 
 	if(len(tweet.Description) < 5){
 		return fmt.Errorf("tweet must be grater than 5. got %d", len(tweet.Description))

@@ -2,12 +2,12 @@ package use_cases
 
 import (
 	"api/cmd/internals/entities"
-	"api/cmd/internals/repositories"
+	// "api/cmd/internals/repositories"
 )
 
-func ShowTweets() map[*entities.Tweet]entities.Tweet {
+func ShowTweets() []entities.Tweet {
 
-	allTweets := repositories.ShowAllTweets()
+	// allTweets := repositories.ShowAllTweets()
 
-	return allTweets
+	return nil
 }

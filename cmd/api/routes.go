@@ -10,6 +10,7 @@ func Routes(engine *gin.Engine) {
 
 	router := engine.Group("/_api/v1")
 
-	router.GET("/ping",controllers.CreateTweet)
+	router.POST("/tweets",controllers.CreateTweet)
+	router.GET("/tweets",controllers.ShowAllTweets)
 
 }
