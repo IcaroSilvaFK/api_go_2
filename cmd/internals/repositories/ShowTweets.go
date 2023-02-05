@@ -4,7 +4,7 @@ import "api/cmd/internals/entities"
 
 func ShowAllTweets() []entities.Tweet{
 	
-	allTweets := entities.TweetEntity().FindAll()
+	allTweets := entities.FindAll()
 
 	return allTweets
 }
