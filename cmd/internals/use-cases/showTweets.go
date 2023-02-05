@@ -2,12 +2,15 @@ package use_cases
 
 import (
 	"api/cmd/internals/entities"
-	// "api/cmd/internals/repositories"
 )
 
-func ShowTweets() []entities.Tweet {
+func ShowTweets() ([]entities.Tweet, error) {
 
-	// allTweets := repositories.ShowAllTweets()
+	allTweets,err := entities.FindAll()
 
-	return nil
+	if err != nil {
+		return nil, err
+	}
+
+	return allTweets,nil
 }

@@ -3,6 +3,7 @@ package entities
 import (
 	"api/cmd/internals/database"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -10,6 +11,7 @@ import (
 type Tweet struct {
 	ID          string `json:"id"`
 	Description string `json:"description"`
+	CreatedAt time.Time `json:"created"`
 }
 
 func NewTweet(description string) (*Tweet, error) {
@@ -36,11 +38,15 @@ func NewTweet(description string) (*Tweet, error) {
 }	
 
 
-func FindAll() []Tweet{
+func FindAll()  ([]Tweet, error){
 
-	tweets := []Tweet{}
+	tweets,err := listAll()
 
-	return tweets
+	if err != nil {
+		return nil ,err
+	}
+
+	return tweets,nil
 }
 
 
@@ -53,6 +59,32 @@ func (tweet *Tweet) IsValid() error {
 	return nil
 
 }	
+
+func listAll() ([]Tweet, error){
+
+	rows,err := database.Connection().Query(`
+		SELECT * FROM tweets
+	`)
+
+	if err != nil{
+		return nil, err
+	}
+
+	var tweets []Tweet
+	
+	for rows.Next(){
+		var tweet Tweet
+
+		rows.Scan(&tweet.ID,&tweet.Description,&tweet.CreatedAt)
+
+		tweets = append(tweets, tweet)
+
+	}
+
+
+	return tweets,nil
+
+}
 
 func (tweet *Tweet) Save()  error {
 	stmt,err := database.Connection().Prepare(`

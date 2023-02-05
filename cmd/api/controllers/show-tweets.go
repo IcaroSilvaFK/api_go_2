@@ -1,23 +1,27 @@
 package controllers
 
 import (
-	"api/cmd/internals/entities"
-	// "api/cmd/internals/repositories"
+	use_cases "api/cmd/internals/use-cases"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-type tweetController struct {
-	tweets []entities.Tweet
-}
 
 func ShowAllTweets(ctx *gin.Context){
 
 
-	// allTweets := repositories.ShowAllTweets()
+	tweets,err := use_cases.ShowTweets()
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+			"timestamp":time.Now(),
+		})
+	}
 
 	ctx.JSON(http.StatusOK,gin.H{
-		"tweets": nil,
+		"tweets": tweets,
 	})
 }
