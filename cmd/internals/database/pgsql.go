@@ -25,5 +25,7 @@ func Connection() *sql.DB{
 		panic(err)
 	}
 
+	defer database.Close()
+
 	return database
 }
