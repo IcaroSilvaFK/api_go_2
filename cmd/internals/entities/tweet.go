@@ -27,7 +27,7 @@ func NewTweet(description string) (*Tweet, error) {
 		return nil,err
 	}
 
-	err = tweet.Save()
+	tweet.Save()
 
 
 	if err != nil {
@@ -86,28 +86,12 @@ func listAll() ([]Tweet, error){
 
 }
 
-func (tweet *Tweet) Save()  error {
-	stmt,err := database.Connection().Prepare(`
-		INSERT INTO tweets 
-			(ID, Description)
-		VALUES
-		 (?,?,?)
-	`)
-
-	if err != nil {
-		return err
-	}	
-
+func (tweet *Tweet) Save()   {
 	fmt.Println(tweet.ID)
+	stmt := database.Connection()
 
-	resp, err := stmt.Exec(tweet.ID, tweet.Description)
+	sql := `INSERT INTO tweets (id,description) VALUES ($1,$2)`
 
-	if err != nil{
-		return err
-	}
-
-	fmt.Println(resp.RowsAffected())
-
-	return nil
+ 	stmt.QueryRow(sql, tweet.ID,tweet.Description)
 
 }
